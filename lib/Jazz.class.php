@@ -138,8 +138,8 @@ if(!class_exists('Jazz')) {
                                 $resumator->user_form .= $this->close_form();
 
                                 // We should attach/render to template
-                                if(file_exists(get_template_directory().DS.'resumator-apply-page.php')) {
-                                    require_once(get_template_directory().DS.'resumator-apply-page.php');
+                                if(file_exists(get_template_directory().DS.'jazz-apply-page.php')) {
+                                    require_once(get_template_directory().DS.'jazz-apply-page.php');
                                 } else {
                                     require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                 }
@@ -171,15 +171,19 @@ if(!class_exists('Jazz')) {
                                     // We should output this one. A 500.
                                     // error decoding
                                   }
+                                  // echo '<pre>';
+                                  // var_dump($resumator->job);
+                                  // echo '</pre>';
+                                  // exit();
                                   unset($resumator->job->job_applicants);
                                   // var_dump($resumator->job);
                                   // exit();
                                   if(!isset($call[2]) || (isset($call[2]) && $call[2]!='apply')) {
                                     $resumator->job->apply_now = $respath.'job/'.$resumator->job->id.'/apply';
-
+                                    
                                     // We should attach/render to template
-                                    if(file_exists(get_template_directory().DS.'resumator-page.php')) {
-                                      require_once(get_template_directory().DS.'resumator-page.php');
+                                    if(file_exists(get_template_directory().DS.'jazz-page.php')) {
+                                      require_once(get_template_directory().DS.'jazz-page.php');
                                     } else {
                                       require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                     }
@@ -203,7 +207,7 @@ if(!class_exists('Jazz')) {
                                           //there was an error, let it render below
                                         } else {
                                           // Get returned applicant_id and submit questionnaire_answers
-                                          $this->submit_questionnaire_answers($applicant_id, $resumator->job->id, $resumator->job->questionnaire, $post['questionnaire']);
+                                          $this->submit_questionnaire_answers($applicant_id, $resumator->job->id, $resumator->job->questionnaire, $_POST['questionnaire']);
                                           // redirect to /thank-you page (or whatever)
                                           wp_redirect('/thank-you');
                                         }
@@ -223,8 +227,8 @@ if(!class_exists('Jazz')) {
                                     $resumator->user_form .= $this->close_form();
 
                                     // We should attach/render to template
-                                    if(file_exists(get_template_directory().DS.'resumator-apply-page.php')) {
-                                      require_once(get_template_directory().DS.'resumator-apply-page.php');
+                                    if(file_exists(get_template_directory().DS.'jazz-apply-page.php')) {
+                                      require_once(get_template_directory().DS.'jazz-apply-page.php');
                                     } else {
                                       require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                     }
@@ -272,8 +276,8 @@ if(!class_exists('Jazz')) {
                                   // We should output this one. A 500.
                                   // error decoding
                                 }
-                                if(file_exists(get_template_directory().DS.'resumator-jobs-page.php')) {
-                                  require_once(get_template_directory().DS.'resumator-jobs-page.php');
+                                if(file_exists(get_template_directory().DS.'jazz-jobs-page.php')) {
+                                  require_once(get_template_directory().DS.'jazz-jobs-page.php');
                                 } else {
                                   require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                 }
@@ -314,7 +318,11 @@ if(!class_exists('Jazz')) {
                 $return .= '<p class="error">'.$this->application_errors['first_name'].'</p>';
               }
               $return .= '<label for="resumator_first_name">First Name</label>';
-              $return .= '<input type="text" id="resumator_first_name" name="first_name" />';
+              $return .= '<input type="text" id="resumator_first_name" name="first_name" ';
+              if(!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) {
+                $return .= 'value="'.$_POST['first_name'].'" ';
+              }
+              $return .= '/>';
             $return .= '</div>';
 
             $return .= '<div class="input';
@@ -326,7 +334,11 @@ if(!class_exists('Jazz')) {
                 $return .= '<p class="error">'.$this->application_errors['last_name'].'</p>';
               }
               $return .= '<label for="resumator_last_name">Last Name</label>';
-              $return .= '<input type="text" id="resumator_last_name" name="last_name" />';
+              $return .= '<input type="text" id="resumator_last_name" name="last_name" ';
+              if(!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) {
+                $return .= 'value="'.$_POST['last_name'].'" ';
+              }
+              $return .= '/>';
             $return .= '</div>';
 
             $return .= '<div class="input';
@@ -338,7 +350,11 @@ if(!class_exists('Jazz')) {
                 $return .= '<p class="error">'.$this->application_errors['email'].'</p>';
               }
               $return .= '<label for="resumator_email">Email Address</label>';
-              $return .= '<input type="text" id="resumator_email" name="email" />';
+              $return .= '<input type="text" id="resumator_email" name="email" ';
+              if(!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) {
+                $return .= 'value="'.$_POST['email'].'" ';
+              }
+              $return .= '/>';
             $return .= '</div>';
 
             $return .= '<div class="input';
@@ -350,8 +366,29 @@ if(!class_exists('Jazz')) {
                 $return .= '<p class="error">'.$this->application_errors['phone'].'</p>';
               }
               $return .= '<label for="resumator_phone">Phone</label>';
-              $return .= '<input type="text" id="resumator_phone" name="phone" />';
+              $return .= '<input type="text" id="resumator_phone" name="phone" ';
+              if(!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) {
+                $return .= 'value="'.$_POST['phone'].'" ';
+              }
+              $return .= '/>';
             $return .= '</div>';
+
+            $return .= '<div class="input';
+            if(isset($this->application_errors['coverletter'])) {
+              $return .= ' error';
+            }
+            $return .= '">';
+              if(isset($this->application_errors['coverletter'])) {
+                $return .= '<p class="error">'.$this->application_errors['coverletter'].'</p>';
+              }
+              $return .= '<label for="resumator_coverletter">Cover Letter</label>';
+              $return .= '<textarea id="resumator_coverletter" name="coverletter">';
+              if((!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) && !empty($_POST['coverletter'])) {
+                $return .= $_POST['coverletter'];
+              }
+              $return .= '</textarea>';
+            $return .= '</div>';
+
 
             // $return .= '<label for="resumator_address">Address</label>';
             // $return .= '<textarea id="resumator_address" name="address"></textarea>';
@@ -393,8 +430,12 @@ if(!class_exists('Jazz')) {
 
             $return .= '<p>OR</p>';
 
-            $return .= '<label for="resumator_resume">Paste Your Resume Here</label>';
-            $return .= '<textarea id="resumator_resume" name="resume"></textarea>';
+            $return .= '<label for="resumator_resumetext">Paste Your Resume Here</label>';
+            $return .= '<textarea id="resumator_resumetext" name="resumetext">';
+            if((!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) && !empty($_POST['resumetext'])) {
+              $return .= $_POST['resumetext'];
+            }
+            $return .= '</textarea>';
 
             $return .= '</fieldset>';
 
@@ -418,6 +459,7 @@ if(!class_exists('Jazz')) {
               // do nothing right now.
             }
           }
+          
           $return = '';
           if(is_array($questions)) {
 
@@ -438,17 +480,25 @@ if(!class_exists('Jazz')) {
                 if($q->question_format == 'Text Field') {
 
                   $return .= '<label for="'.$q->questionnaire_id.'_'.$key.'">'.$q->question_text.'</label>'."\r\n";
-                  $return .= '<input type="text" id="'.$q->questionnaire_id.'_'.$key.'" name="questionnaire['.$key.']" />'."\r\n";
+                  $return .= '<input type="text" id="'.$q->questionnaire_id.'_'.$key.'" name="questionnaire['.$key.']" ';
+                  if(!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) {
+                    $return .= 'value="'.$_POST['questionnaire'][$key].'" ';
+                  }
+                  $return .= '/>'."\r\n";
 
                 } else if($q->question_format == 'Checkbox') {
 
-                  $return .= '<fieldset><legend>'.$q->question_text.'</legend>'."\r\n";
+                  $return .= '<fieldset class="checkbox"><legend>'.$q->question_text.'</legend>'."\r\n";
 
                   $answers = explode("\r\n", $q->question_answers);
                   foreach($answers as $k => $a) {
 
                     $return .= '<input type="hidden" value="0" name="questionnaire['.$key.']['.$a.']" />'."\r\n";
-                    $return .= '<input type="checkbox" value="1" id="'.$q->questionnaire_id.'_'.$key.'" name="questionnaire['.$key.']['.$a.']" /><label for="'.$q->questionnaire_id.'_'.$key.'">'.$a.'</label>'."\r\n";
+                    $return .= '<input type="checkbox" value="'.$a.'" id="'.$q->questionnaire_id.'_'.$key.'" name="questionnaire['.$key.']['.$a.']" ';
+                    if((!empty($this->application_errors) || isset($this->application_errors['MAINJAZZAPPERROR'])) && isset($_POST['questionnaire'][$key][$a]) && $_POST['questionnaire'][$key][$a]!="0") {
+                      $return .= 'checked ';
+                    }
+                    $return .= '/><label for="'.$q->questionnaire_id.'_'.$key.'">'.$a.'</label>'."\r\n";
 
                   }
                   
@@ -495,25 +545,25 @@ if(!class_exists('Jazz')) {
             $this->application_errors['phone'] = 'You must provide a phone number.';
           }
 
-          if(empty($post['resume']) && $_FILES['resume_file']['error']==4) {
+          if(!isset($post['coverletter']) || empty($post['coverletter'])) {
             $return = false;
-            $this->application_errors['resume'] = 'You must provide either a plaintext or PDF resume.';
+            $this->application_errors['coverletter'] = 'You must provide a cover letter.';
           }
 
-          // var_dump($_FILES);
-          // exit();
-
-          if(isset($_FILES['resume_file'])) {
+          if(empty($post['resumetext']) && $_FILES['resume_file']['error']==4) {
+            $return = false;
+            $this->application_errors['MAINJAZZAPPERROR'] = $this->application_errors['resume'] = 'You must provide either a plaintext or PDF resume.';
+          } else if(isset($_FILES['resume_file']) && $_FILES['resume_file']['error']!=4) {
             if($_FILES['resume_file']['error']==0 && $_FILES['resume_file']['type']!='application/pdf') {
               $return = false;
-              $this->application_errors['resume'] = 'You must provide a PDF file as your resume.';
+              $this->application_errors['MAINJAZZAPPERROR'] = $this->application_errors['resume'] = 'You must provide a PDF file as your resume.';
             } else if($_FILES['resume_file']['error']!=0) {
               $return = false;
-              $this->application_errors['resume'] = 'There was an error uploading your resume.';
+              $this->application_errors['MAINJAZZAPPERROR'] = $this->application_errors['resume'] = 'There was an error uploading your resume.';
             }
-          } else if(empty($post['resumetext']) && !isset($_FILES['resume_file'])) {
+          } else if(empty($post['resumetext'])) {
             $return = false;
-            $this->application_errors['resume'] = 'You must provide either a PDF file as your resume or paste a resume into the available field.';
+            $this->application_errors['MAINJAZZAPPERROR'] = $this->application_errors['resume'] = 'You must provide either a PDF file as your resume or paste a resume into the available field.';
           }
 
           foreach($post['questionnaire'] as $k => $v) {
@@ -547,13 +597,21 @@ if(!class_exists('Jazz')) {
             'first_name' => $applicant['first_name'],
             'last_name' => $applicant['last_name'],
             'email' => $applicant['email'],
+            'phone' => $applicant['phone'],
+            'coverletter' => $applicant['coverletter'],
             'job' => $job_id,
             'custom_file_privacy' => 0
           );
 
+          // echo '<pre>';
           // var_dump($data);
-          // var_dump($_POST);
+          // echo '</pre>';
+          // echo '<pre>';
+          // var_dump($applicant);
+          // echo '</pre>';
+          // echo '<pre>';
           // var_dump($_FILES);
+          // echo '</pre>';
           // exit();
 
           if(isset($applicant['resumetext']) && !empty($applicant['resumetext'])) {
@@ -562,12 +620,12 @@ if(!class_exists('Jazz')) {
             try {
               $data['base64-resume'] = base64_encode(file_get_contents($_FILES['resume_file']['tmp_name']));
             } catch(Exception $e) {
-              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume file upload. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanhainz.com</a>.';
+              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume file upload. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
               return false;
             }
           } else {
             // Threw here if "file upload" not present on first sentence.
-            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanhainz.com</a>.';
+            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
             return false;
           }
 
@@ -585,23 +643,28 @@ if(!class_exists('Jazz')) {
 
           $result = wp_remote_post(JAZZ_API_URL.'applicants', $args);
 
-          if($result['status']=='200') {
+          // echo '<pre>';
+          // var_dump($result);
+          // echo '</pre>';
+          // exit();
+
+          if($result['status']=='200' || $result['response']['code']==200) {
             try {
               $rez = json_decode($result['body']);
               if(isset($rez->prospect_id)) {
                 return $rez->prospect_id;
               } else {
-                $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanhainz.com</a>.';
+                $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
                 return false;
               }
             } catch (Exception $e) {
-              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanhainz.com</a>.';
+              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
               return false;
             }
           } else {
             // ERROR!
             // Can we set a custom from the response? ....maybe.
-            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanhainz.com</a>.';
+            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
             return false;
           }
         }
@@ -614,10 +677,16 @@ if(!class_exists('Jazz')) {
           // job_id
           // answer_value_  01 - 20
           $data = array(
+            'apikey' => $resumator_api_key,
             'applicant_id' => $p_id,
-            'questonnaire_id' => $questionnaire_id,
+            'questionnaire_id' => $questionnaire_id,
             'job_id' => $job_id,
           );
+          
+          // echo '<pre>';
+          // var_dump($answers);
+          // echo '</pre>';
+          
           foreach($answers as $key => $v) {
             if($key<20) {
               $kv = $key+1;
@@ -625,27 +694,33 @@ if(!class_exists('Jazz')) {
                 $kv = '0'.$kv;
               }
               if(is_array($v)) {
-                $data['answer_value_'.$kv] = implode("\r\n", $v);
+                $f = array();
+                foreach($v as $item) {
+                  if($item!="0") {
+                    $f[] = $item;
+                  }
+                }
+                $data['answer_value_'.$kv] = implode(", ", $f);
               } else {
                 $data['answer_value_'.$kv] = $v;
               }
             }
           }
+
           $args = array(
-            'body' => json_encode(array(
-              "type" => "post",
-              "url" => "https://api.resumatorapi.com/v1/questionnaire_answers",
-              "data" => $data,
-              "dataType" => "json",
-              "contentType" => "application/json"
-            )),
+            'body' => json_encode($data),
             'headers' => array(
+              'Data-Type' => "json",
               'Content-Type' => 'application/json'
             ),
             'timeout' => 20
           );
           $result = wp_remote_post(JAZZ_API_URL.'questionnaire_answers', $args);
-          if($result['status']==200) {
+          // echo '<pre>';
+          // var_dump($result);
+          // echo '</pre>';
+          // exit();
+          if($result['status']==200 || $result['response']['code']==200) {
             return true;
           } else {
             return false;
