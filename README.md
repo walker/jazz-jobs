@@ -1,6 +1,6 @@
-## Jazz
+## Jazz (formerly "Resumator")
 
-A Wordpress plugin that allows you to have a more featureful Jazz experience embedded within your site.
+A Wordpress plugin that allows you to have a more featureful Jazz (formerly "Resumator") experience embedded within your site.
 
 You must include jQuery Form in your page:
 
