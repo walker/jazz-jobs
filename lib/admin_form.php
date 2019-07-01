@@ -1,4 +1,4 @@
-<div id="stripe-payments-admin-wrap" class="wrap">
+<div id="jazz-jobs-admin-wrap" class="wrap">
     <h2>Jazz - Options</h2>
     <form name="resumator_form" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
         <table class="form-table">
