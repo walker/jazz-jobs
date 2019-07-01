@@ -3,7 +3,7 @@
 Plugin Name: Jazz Jobs
 Plugin URI: http://github.com/walker/jazz-jobs
 Description: Jazz
-Version: 0.0.2
+Version: 0.0.3
 Author: Walker Hamilton
 Author URI: http://walkerhamilton.com/
 */
