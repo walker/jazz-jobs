@@ -620,12 +620,12 @@ if(!class_exists('Jazz')) {
             try {
               $data['base64-resume'] = base64_encode(file_get_contents($_FILES['resume_file']['tmp_name']));
             } catch(Exception $e) {
-              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume file upload. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
+              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume file upload. Please try again.';
               return false;
             }
           } else {
             // Threw here if "file upload" not present on first sentence.
-            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
+            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem processing your resume. Please try again.';
             return false;
           }
 
@@ -654,17 +654,17 @@ if(!class_exists('Jazz')) {
               if(isset($rez->prospect_id)) {
                 return $rez->prospect_id;
               } else {
-                $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
+                $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again.';
                 return false;
               }
             } catch (Exception $e) {
-              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
+              $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again.';
               return false;
             }
           } else {
             // ERROR!
             // Can we set a custom from the response? ....maybe.
-            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again. If you continue to experience issues, please contact us at <a href="mailto:info@grossmanheinz.com">info@grossmanheinz.com</a>.';
+            $this->application_errors['MAINJAZZAPPERROR'] = 'We had a problem creating your application record. Please try again.';
             return false;
           }
         }
