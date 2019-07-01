@@ -13,7 +13,7 @@ if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
 // Define variables
 if ( ! defined( 'JAZZ_VERSION' ) )
-    define( 'JAZZ_VERSION', '0.0.2' );
+    define( 'JAZZ_VERSION', '0.0.3' );
 
 if ( ! defined( 'JAZZ_API_VERSION' ) )
     define( 'JAZZ_API_VERSION', 'v1' );
