@@ -138,8 +138,8 @@ if(!class_exists('Jazz')) {
                                 $resumator->user_form .= $this->close_form();
 
                                 // We should attach/render to template
-                                if(file_exists(get_template_directory().DS.'jazz-apply-page.php')) {
-                                    require_once(get_template_directory().DS.'jazz-apply-page.php');
+                                if( locate_template( array( 'jazz-apply-page.php') ) != '' ) {
+                                    require_once( locate_template( array( 'jazz-apply-page.php' ), false, false ) );
                                 } else {
                                     require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                 }
@@ -182,8 +182,8 @@ if(!class_exists('Jazz')) {
                                     $resumator->job->apply_now = $respath.'job/'.$resumator->job->id.'/apply';
                                     
                                     // We should attach/render to template
-                                    if(file_exists(get_template_directory().DS.'jazz-page.php')) {
-                                      require_once(get_template_directory().DS.'jazz-page.php');
+                                    if( locate_template( array( 'jazz-page.php') ) != '' ) {
+                                      require_once( locate_template( array( 'jazz-page.php' ), false, false ) );
                                     } else {
                                       require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                     }
@@ -227,8 +227,8 @@ if(!class_exists('Jazz')) {
                                     $resumator->user_form .= $this->close_form();
 
                                     // We should attach/render to template
-                                    if(file_exists(get_template_directory().DS.'jazz-apply-page.php')) {
-                                      require_once(get_template_directory().DS.'jazz-apply-page.php');
+                                    if( locate_template( array( 'jazz-apply-page.php') ) != '' ) {
+                                      require_once( locate_template( array( 'jazz-apply-page.php' ), false, false ) );
                                     } else {
                                       require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                     }
@@ -276,8 +276,8 @@ if(!class_exists('Jazz')) {
                                   // We should output this one. A 500.
                                   // error decoding
                                 }
-                                if(file_exists(get_template_directory().DS.'jazz-jobs-page.php')) {
-                                  require_once(get_template_directory().DS.'jazz-jobs-page.php');
+                                if( locate_template( array( 'jazz-jobs-page.php') ) != '' ) {
+                                  require_once( locate_template( array( 'jazz-jobs-page.php' ), false, false ) );
                                 } else {
                                   require_once(JAZZ_PLUGIN_DIR.DS.'template'.DS.'default.php');
                                 }
